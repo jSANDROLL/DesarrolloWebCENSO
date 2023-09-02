@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MANIPULACION DE DATOS (informacion Depto. Retalhuleu)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="CallAjax/called.js"></script>
+  <link rel="stylesheet" href="CSS/STYLES.css"> 
+</head>
+
+
+<body>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script>
+  <BR>
+
+        <!--BOTON PARA REGRESAR A PAGINA PRINCIPAL-->
+
+    <button type="button" class="btn btn-outline-light" id="rediGeneral">ATRÁS</button>
+
+    <script>
+        document.getElementById("rediGeneral").addEventListener("click", function() {
+            window.location.href = "indexGENERAL.html";
+        });
+    </script>
+
+  <!-- GRUPO PARA MANDAR A LLAMAR LA INFORMACION POR DEPARTAMENTO-->
+  <div class="card-group">
+    <div class="col-sm-12 col-md-12">
+      <div class="TITLE-GENERAL" style="text-align: center;">
+        <h1 id="nm" class="tittle general">INFORMACION POR DEPARTAMENTO</h1>
+
+      </div>
+
+      <!--JAVASCRIPT DE LLAMADA DE INFORMACION-->
+      <script>
+        var url = "https://censopoblacion.gt/indicadores/11/999";
+
+
+fetch(url)
+.then(response => response.json())
+.then(data => {
+   console.log(data)
+   //var divPeli = document.getElementById('divPeli');
+   //divPeli.innerHTML = '';
+
+   if (data.length > 0) {
+       //manipulacion de datos para el chart (muestra en grafica)
+       google.charts.setOnLoadCallback(MydrawChart(data[0].total_sexo_hombre, data[0].total_sexo_mujeres));
+       console.log(data[0].total_sexo_hombre);
+
+
+       //manipulacion de datos para el chart(pueblos)
+       //google.charts.setOnLoadCallback(MydrawChart2(data[0].pob_pueblo_maya, data[0].pob_pueblo_ladino, data[0].pob_pueblo_garifuna, data[0].pob_pueblo_xinca, data[0].pob_pueblo_afrodescendiente, data[0].pob_pueblo_extranjero));
+
+       //DATOS TITULOS INFORMACION
+       document.getElementById('Nombre').innerText = data[0].nombre;
+       document.getElementById('Capital').innerText = data[0].capital;
+
+
+       //TOTAL SEXO HOMBRES Y MUJERES
+       //Forma 1 de manipular datos 
+       var NumHombres = document.getElementById('NumHombres');
+       NumHombres.textContent = data[0].total_sexo_hombre;
+       //forma 2 de manipular datos 
+       //TOTAL SEXO HOMBRES Y MUJERES
+       document.getElementById('PorHombres').innerText = data[0].porc_sexo_hombre.toFixed(2);
+       document.getElementById('NumMujeres').innerText = data[0].total_sexo_mujeres;
+       document.getElementById('PorMujres').innerText = data[0].porc_sexo_mujeres.toFixed(2);
+
+       //PORCENTAJE DE PUEBLOS
+       document.getElementById('PobMAYA').innerText = data[0].pob_pueblo_maya;
+       document.getElementById('PorMAYA').innerText = data[0].porc_pueblo_maya.toFixed(2);
+       document.getElementById('PobLADINO').innerText = data[0].pob_pueblo_ladino;
+       document.getElementById('PorLADINO').innerText = data[0].porc_pueblo_ladino.toFixed(2);
+       document.getElementById('PobGARI').innerText = data[0].pob_pueblo_garifuna;
+       document.getElementById('PorGARI').innerText = data[0].porc_pueblo_garifuna.toFixed(2);
+       document.getElementById('PobXINCA').innerText = data[0].pob_pueblo_xinca;
+       document.getElementById('PorXINCA').innerText = data[0].porc_pueblo_xinca.toFixed(2);
+       document.getElementById('PobAFRO').innerText = data[0].pob_pueblo_afrodescendiente;
+       document.getElementById('PorAFRO').innerText = data[0].porc_pueblo_afrodescendiente.toFixed(2);
+       document.getElementById('PobEXTRA').innerText = data[0].pob_pueblo_extranjero;
+       document.getElementById('PorEXTRA').innerText = data[0].porc_pueblo_extranjero.toFixed(2);
+
+
+       //PORCENTAJE DE SECTORES URBANOS Y RURALES
+
+       document.getElementById('PobURBANO').innerText = data[0].total_sector_urbano;
+       document.getElementById('PorURBANO').innerText = data[0].porc_sector_urbano.toFixed(2);
+       document.getElementById('PobRURAL').innerText = data[0].total_sector_rural;
+       document.getElementById('PorRURAL').innerText = data[0].porc_sector_rural.toFixed(2);
+
+       //
+   }
+
+});
+   </script>
+
+
+  <BR>
+
+  <div class="TITLE-GENERAL" style="text-align: center;">
+    <h1 id="Nombre" class="tittle general">TITLE GENERAL</h1>
+
+  </div>
+  <div class="TITLE-SECONDARY" style="text-align: center;">
+    <h2 id="Capital" class="tittle general">SECONDARITITLE</h2>
+
+
+    <!-- GRUPO PARA MANDAR A LLAMAR LA INFORMACION POR DEPARTAMENTO-->
+   <br>
+    <div class="card-group">
+      <div class="col-sm-12 col-md-12">
+        <div class="TITLE-GENERAL" style="text-align: center;">
+          <h1 id="nm" class="tittle general">BUSCAR INFORMACION POR MUNICIPIO</h1>
+
+        </div>
+        <div class="input-group">
+          <select id="Cod_Municipio" class="form-select" aria-label="Example select with button addon">
+            <option value="999">Seleccionar...</option>
+            <option value="1101">Retalhuleu</option>
+            <option value="1102">San Sebastián</option>
+            <option value="1103">Santa Cruz Muluá</option>
+            <option value="1104">San Martín Zapotitlán</option>
+            <option value="1105">San Felipe Retalhuleu</option>
+            <option value="1106">San Andrés Villa Seca</option>
+            <option value="1107">Champerico</option>
+            <option value="1108">Nuevo San Carlos</option>
+            <option value="1109">El Asintal</option>
+          </select>
+        </div>
+        <br>
+      </div>
+      <button onclick="LLAMADADATOSMUNRetalhuleu();" type="submit" class="btn btn-light">Buscar</button>
+    </div>
+  </div>
+
+  <br>
+  </div>
+  <!--Recibidores de datos-->
+  <div class="card-group">
+    <div class="card">
+
+      <div class="card-body ">
+        <h5 class="card-title">TOTAL SEXO HOMBRES Y MUJERES</h5>
+        <br>
+        <div class="row">
+          <div class="col-sm-4"></div>
+          <div class="col-sm-4">Total</div>
+          <div class="col-sm-4">Porcentaje</div>
+          <div class="col-sm-4">HOMBRES </div>
+          <div class="col-sm-4" id="NumHombres">###</div>
+          <div class="col-sm-4" id="PorHombres">%%</div>
+          <div class="col-sm-4">MUJERES </div>
+          <div class="col-sm-4" id="NumMujeres">###</div>
+          <div class="col-sm-4" id="PorMujres">%%</div>
+        </div>
+        <BR>
+        <div class="col-sm-8" id="piechart" style=" width: 500px; height: 300px;"></div>
+      </div>
+      <div class="card">
+        <!--PUEBLOS-->
+        <div class="card-body ">
+          <h5 class="card-title">PORCENTAJE DE PUEBLOS</h5>
+          <br>
+          <!--DATOS PUEBLO MAYA-->
+          <div class="card-body">
+            <h5 class="card-title">MAYAS :</h5>
+            <br>
+            <div class="row">
+              <div class="col-sm-6">Total</div>
+              <div class="col-sm-6">Porcentaje</div>
+              <div class="col-sm-6" id="PobMAYA">###</div>
+              <div class="col-sm-6" id="PorMAYA">%%</div>
+            </div>
+
+            <br>
+            <!--DATOS PUEBLO LADINO-->
+
+            <h5 class="card-title">LADINOS :</h5>
+            <br>
+            <div class="row">
+              <div class="col-sm-6">Total</div>
+              <div class="col-sm-6">Porcentaje</div>
+              <div class="col-sm-6" id="PobLADINO">###</div>
+              <div class="col-sm-6" id="PorLADINO">%%</div>
+            </div>
+            <br>
+
+            <!--DATOS PUEBLO GARIFUNA-->
+            <h5 class="card-title">GARIFUNAS :</h5>
+            <br>
+            <div class="row">
+              <div class="col-sm-6">Total</div>
+              <div class="col-sm-6">Porcentaje</div>
+              <div class="col-sm-6" id="PobGARI">###</div>
+              <div class="col-sm-6" id="PorGARI">%%</div>
+            </div>
+            <br>
+
+            <!--DATOS PUEBLO XINCA-->
+            <h5 class="card-title">XINCAS :</h5>
+            <br>
+            <div class="row">
+              <div class="col-sm-6">Total</div>
+              <div class="col-sm-6">Porcentaje</div>
+              <div class="col-sm-6" id="PobXINCA">###</div>
+              <div class="col-sm-6" id="PorXINCA">%%</div>
+            </div>
+            <br>
+
+            <!--DATOS PUEBLO AFRODESCENDIENTE-->
+            <h5 class="card-title">AFRODESCENDIENTES :</h5>
+            <br>
+            <div class="row">
+              <div class="col-sm-6">Total</div>
+              <div class="col-sm-6">Porcentaje</div>
+              <div class="col-sm-6" id="PobAFRO">###</div>
+              <div class="col-sm-6" id="PorAFRO">%%</div>
+            </div>
+            <br>
+
+            <!--DATOS PUEBLO EXTRANJEROS-->
+            <h5 class="card-title">EXTRANJEROS :</h5>
+            <br>
+            <div class="row">
+              <div class="col-sm-6">Total</div>
+              <div class="col-sm-6">Porcentaje</div>
+              <div class="col-sm-6" id="PobEXTRA">###</div>
+              <div class="col-sm-6" id="PorEXTRA">%%</div>
+            </div>
+            <BR>
+          </div>
+        </div>
+        <div class="card">
+          <!--SECTORES DE POBLACION-->
+          <div class="card-body">
+            <h5 class="card-title">SECTORES DE POBLACION</h5>
+            <br>
+
+            <!--DATOS SECTOR URBANO-->
+            <h5 class="card-title">URBANO :</h5>
+            <br>
+            <div class="row">
+              <div class="col-sm-6">Total</div>
+              <div class="col-sm-6">Porcentaje</div>
+              <div class="col-sm-6" id="PobURBANO">###</div>
+              <div class="col-sm-6" id="PorURBANO">%%</div>
+            </div>
+            <BR>
+
+            <br>
+            <!--DATOS SECTOR RURAL-->
+            <h5 class="card-title">RURAL :</h5>
+            <br>
+            <div class="row">
+              <div class="col-sm-6">Total</div>
+              <div class="col-sm-6">Porcentaje</div>
+              <div class="col-sm-6" id="PobRURAL">###</div>
+              <div class="col-sm-6" id="PorRURAL">%%</div>
+            </div>
+            <BR>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>
